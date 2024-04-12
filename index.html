@@ -1,26 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR map</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hover Image</title>
+<style>
+.container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.image {
+  position: absolute;
+  top: -100px; /* начальное положение изображения за пределами контейнера */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  background-image: url('your_image_url');
+  background-size: cover;
+  opacity: 0; /* начально изображение скрыто */
+  transition: opacity 0.5s ease-in-out;
+}
+</style>
 </head>
-<body style='margin : 0px; overflow: scroll;'></body>
-    AR mapi
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <!-- we import arjs version without NFT but with marker + location based support -->
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <body style="margin : 0px; overflow: hidden;">
-    <a-scene embedded arjs>
-        <a-marker preset="hiro">
-            <a-entity
-                position="0 0 0"
-                scale="1 1 1"
-                gltf-model="car\scene.gltf"
-            ></a-entity>
-        </a-marker>
-        <a-entity camera></a-entity>
-    </a-scene>
+<body>
+
+<div class="container" id="container">
+  <div class="image" id="image"></div>
+</div>
+
+<script>
+var container = document.getElementById("container");
+var image = document.getElementById("image");
+
+container.addEventListener("mousemove", function(event) {
+  var mouseX = event.clientX;
+  var mouseY = event.clientY;
+
+  var containerRect = container.getBoundingClientRect();
+  var containerWidth = containerRect.width;
+  var containerHeight = containerRect.height;
+  var containerX = containerRect.left + window.pageXOffset;
+  var containerY = containerRect.top + window.pageYOffset;
+
+  var centerX = containerX + containerWidth / 2;
+  var centerY = containerY + containerHeight / 2;
+
+  if (mouseY < centerY) {
+    image.style.opacity = 1;
+    image.style.top = "0";
+  } else {
+    image.style.opacity = 0;
+    image.style.top = "-100px";
+  }
+});
+</script>
+
 </body>
 </html>
